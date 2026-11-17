@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G Force · Exchange & Disclosures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{
+  --ink:#16302a; --ink2:#1f4038; --ink3:#2c5449;
+  --gold:#a8854f; --gold2:#c9a86a; --gold-soft:#efe3c8;
+  --cream:#f5f0e4; --paper:#fbf8f1; --white:#fffdf8;
+  --line:#e2d8c3; --text:#22302c; --muted:#6d756e;
+  --ok:#2f6b52; --warn:#a2622a; --bad:#9a3b32;
+  --serif:"Cormorant Garamond","Songti SC",Georgia,serif;
+  --sans:Inter,-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--cream);color:var(--text);font:14px/1.5 var(--sans);display:flex;flex-direction:column}
+button{font:inherit;cursor:pointer}
+h1,h2,h3{font-family:var(--sans);font-weight:700;margin:0;color:var(--ink);letter-spacing:-.015em}
+h1{font-size:27px} h2{font-size:20px} h3{font-size:16px}
+
+/* header */
+.top{background:var(--ink);color:var(--cream);display:flex;align-items:center;gap:28px;padding:0 24px;height:60px;border-bottom:2px solid var(--gold);flex:none}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:22px;letter-spacing:.08em;white-space:nowrap}
+.brand i{width:30px;height:30px;border:1px solid var(--gold2);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-style:normal;font-size:16px}
+.brand small{font:500 10px var(--sans);letter-spacing:.22em;color:var(--gold2);text-transform:uppercase;margin-left:4px}
+.mods{display:flex;gap:4px;height:100%}
+.mods button{background:none;border:0;color:#cfd8d1;padding:0 16px;border-bottom:3px solid transparent;margin-bottom:-2px;font-weight:500;white-space:nowrap}
+.mods button.on{color:var(--gold2);border-color:var(--gold2)}
+.role{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12px;color:#b9c5bd;white-space:nowrap}
+.seg{display:flex;border:1px solid var(--ink3);border-radius:999px;overflow:hidden}
+.seg button{background:none;border:0;color:#cfd8d1;padding:6px 12px;font-size:12px}
+.seg button.on{background:var(--gold);color:#fff}
+
+/* shared */
+.sub{background:var(--paper);border-bottom:1px solid var(--line);padding:0 24px;display:flex;gap:6px;align-items:center;flex:none;overflow-x:auto}
+.sub button{background:none;border:0;padding:13px 12px;color:var(--muted);border-bottom:2px solid transparent;font-weight:500;white-space:nowrap}
+.sub button.on{color:var(--ink);border-color:var(--gold)}
+.sub .who{margin-left:auto;font-size:12px;color:var(--muted);white-space:nowrap;padding-left:16px}
+.btn{background:var(--ink);color:var(--cream);border:1px solid var(--ink);border-radius:6px;padding:8px 14px;font-weight:500;white-space:nowrap}
+.btn:hover{background:var(--ink2)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn.ghost{background:var(--white);color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--gold)}
+.btn.sm{padding:4px 10px;font-size:12px}
+.btn.danger{color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:var(--gold-soft);color:#7a5c26;white-space:nowrap}
+.sdot{display:inline-block;width:10px;height:10px;border-radius:50%;border:1.5px solid var(--gold);margin-right:4px} .sdot.on{background:var(--bad);border-color:var(--bad)}
+.tag.g{background:#dfeae2;color:var(--ok)} .tag.d{background:var(--ink);color:var(--gold2)} .tag.r{background:#f3dfda;color:var(--bad)} .tag.n{background:#ece7da;color:var(--muted)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:10px}
+.muted{color:var(--muted)} .small{font-size:12px} .right{text-align:right}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.page{flex:1;overflow:auto;padding:28px 24px 60px}
+.wrap{max-width:1120px;margin:0 auto}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 14px;background:#f1eadb;font-weight:600}
+td{padding:12px 14px;border-top:1px solid var(--line);vertical-align:middle}
+.num{font-variant-numeric:tabular-nums}
+input[type=text],input[type=number],input[type=date],input[type=time],select,textarea{font:inherit;border:1px solid var(--line);border-radius:6px;padding:7px 9px;background:#fff;color:var(--text);width:100%}
+label.f{display:block;font-size:12px;color:var(--muted);font-weight:500}
+label.f>*{margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.note{background:#faf3e1;border:1px solid #e6d3a6;border-radius:8px;padding:10px 12px;font-size:13px;color:#6b5324}
+.switch{position:relative;width:38px;height:22px;border-radius:999px;background:#cfc6b2;border:0;padding:0;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.switch.on{background:var(--ok)} .switch.on::after{left:19px}
+
+/* map */
+#mapview{flex:1;display:flex;min-height:0}
+#map{flex:1;min-width:0;background:#e9e4d6}
+.leaflet-tile-pane{filter:grayscale(.55) sepia(.3) brightness(1.03)}
+#panel{width:400px;flex:none;background:var(--paper);border-left:1px solid var(--line);overflow:auto;padding:18px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 14px}
+.chip{border:1px solid var(--line);background:var(--white);border-radius:999px;padding:5px 11px;font-size:12px;color:var(--muted)}
+.chip.on{background:var(--ink);color:var(--gold2);border-color:var(--ink)}
+.opp{padding:12px 14px;margin-bottom:10px;cursor:pointer;display:block;width:100%;text-align:left}
+.opp:hover{border-color:var(--gold)}
+.opp b{font-size:15px;color:var(--ink);font-weight:700}
+.amt{font-size:19px;font-weight:700;letter-spacing:-.01em}
+.amt.earn{color:var(--ok)} .amt.pay{color:var(--gold)}
+.pin{display:flex;align-items:center;gap:5px;padding:4px 9px 4px 6px;border-radius:999px;font:600 12px var(--sans);white-space:nowrap;box-shadow:0 2px 8px rgba(22,48,42,.3);border:1.5px solid #fff;transform:translate(-50%,-100%);position:absolute}
+.pin::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:inherit}
+.pin svg{width:14px;height:14px;flex:none}
+.pin.pay{background:var(--ok);color:#fff;border-top-color:var(--ok)} .pin.pay::after{border-top-color:var(--ok)}
+.pin.bid{background:var(--gold);color:#fff} .pin.bid::after{border-top-color:var(--gold)}
+.pin.learn{background:var(--white);color:var(--ink);border-color:var(--gold)} .pin.learn::after{border-top-color:var(--gold)}
+.pin.mine{background:var(--ink);color:var(--gold2)} .pin.mine::after{border-top-color:var(--ink)}
+.pin.idle{background:#d9d2c1;color:#5d655f} .pin.idle::after{border-top-color:#d9d2c1}
+.pin.sel{outline:3px solid var(--gold2);z-index:999}
+.legend{position:absolute;left:14px;bottom:22px;z-index:500;background:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12px;display:grid;gap:6px}
+.legend span{display:flex;align-items:center;gap:8px}
+.dot{width:12px;height:12px;border-radius:50%;flex:none}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;margin:12px 0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right;font-weight:500}
+.esc{display:flex;align-items:flex-end;gap:3px;height:46px;margin:8px 0 4px}
+.esc i{flex:1;background:#e5dcc6;border-radius:2px 2px 0 0}
+.esc i.past{background:var(--gold2)} .esc i.now{background:var(--ok)}
+.bidrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.av{width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--gold2);display:grid;place-items:center;font-size:12px;font-weight:600;flex:none}
+
+/* disclosures */
+.pkgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:20px}
+.pkg{padding:0;overflow:hidden;cursor:pointer;text-align:left;display:block;width:100%}
+.pkg:hover{border-color:var(--gold)}
+.pkg .ph{height:96px;background:linear-gradient(135deg,var(--ink),var(--ink3));display:flex;align-items:flex-end;padding:12px 16px;color:var(--gold2);font-weight:700;font-size:18px}
+.pkg .bd{padding:14px 16px}
+.bar{height:6px;border-radius:3px;background:#e9e1cf;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--gold)}
+.drop{border:1.5px dashed var(--gold2);border-radius:10px;padding:22px;text-align:center;color:var(--muted);background:#fdfaf2;margin:16px 0}
+.drop.over{background:var(--gold-soft);border-color:var(--gold)}
+.file{display:flex;gap:14px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+.file:first-child{border-top:0}
+.thumb{width:40px;height:52px;border:1px solid var(--line);border-radius:3px;background:#fff;display:grid;place-items:center;font-size:9px;font-weight:700;color:var(--bad);flex:none}
+.file .nm{font-weight:600;color:var(--ink);word-break:break-word}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 16px;border-top:1px solid var(--line)}
+.check:first-of-type{border-top:0}
+.ic{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;flex:none;margin-top:1px}
+.ic.ok{background:var(--ok)} .ic.no{background:var(--bad)} .ic.wa{background:var(--warn)}
+.steps{display:grid;gap:8px;margin:14px 0}
+.step{display:flex;gap:10px;align-items:center;color:var(--muted)}
+.step.done{color:var(--ok)} .step.run{color:var(--ink);font-weight:600}
+.spin{width:14px;height:14px;border:2px solid var(--gold-soft);border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+
+/* modal + toast */
+.scrim{position:fixed;inset:0;background:rgba(22,48,42,.55);display:grid;place-items:center;z-index:2000;padding:16px}
+.modal{background:var(--paper);border-radius:12px;border-top:3px solid var(--gold);width:min(560px,100%);max-height:90vh;overflow:auto;padding:24px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:10px 18px;border-radius:999px;border:1px solid var(--gold);z-index:3000;font-size:13px}
+.proto{background:var(--gold-soft);color:#6b5324;font-size:12px;text-align:center;padding:4px;flex:none}
+@media (max-width:860px){
+  #mapview{flex-direction:column} #panel{width:auto;border-left:0;border-top:1px solid var(--line);max-height:55%}
+  .top{gap:8px 10px;padding:8px 12px 0;height:auto;flex-wrap:wrap}.mods{order:3;width:100%;height:40px}.mods button{padding:0 10px}.role{font-size:0;gap:0}.brand small{display:none}
+  .legend{display:none}#map{min-height:260px}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+
+/* G Force shell */
+.gtop{height:52px;flex:none;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 20px}
+.glogo{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;white-space:nowrap;width:192px}
+.glogo b{color:var(--gold);font-weight:600}
+.glogo i{width:14px;height:22px;border-radius:50%;background:radial-gradient(ellipse at 50% 60%,var(--gold2),var(--gold))}
+.gnav{display:flex;gap:4px;flex:1;justify-content:center;overflow:hidden}
+.gnav span{padding:7px 12px;border-radius:7px;font-weight:500;white-space:nowrap;color:var(--text)}
+.gnav span.on{background:#efe9da;font-weight:600}
+.shell{flex:1;display:flex;min-height:0}
+.main{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column}
+.side{width:204px;flex:none;background:var(--cream);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:22px 8px 14px;overflow:auto}
+.gaea{text-align:center;font:700 20px var(--sans);letter-spacing:.12em;color:var(--ink);padding-bottom:18px;margin:0 8px 16px;border-bottom:1px solid var(--line)}
+.gaea small{display:block;font:500 9px var(--sans);letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.gaea em{display:block;font:600 10px var(--sans);letter-spacing:.3em;text-transform:uppercase;color:var(--ink);margin-top:14px}
+.side .lbl{font-size:10px;letter-spacing:.24em;color:var(--muted);padding:4px 10px 8px;text-transform:uppercase}
+.mods{flex-direction:column;height:auto;gap:2px}
+.mods button{color:var(--text);text-align:left;padding:9px 12px;border:0;border-radius:7px;margin:0;font-weight:500}
+.mods button.on{background:#ebe2cd;color:var(--gold);font-weight:600;border:0}
+.mods button.ext{color:#8c938a}
+.side .role{margin:auto 0 0;flex-direction:column;align-items:stretch;gap:8px;color:var(--muted);padding:12px 6px 0;border-top:1px solid var(--line)}
+.side .seg{border-color:var(--line)} .side .seg button{color:var(--muted);flex:1;padding:6px 4px}
+.side .seg button.on{background:var(--ink);color:var(--gold2)}
+.sub{background:var(--cream)}
+.split{display:grid;grid-template-columns:1fr auto;gap:5px 14px;font-size:13px}
+.split .tot{border-top:1px solid var(--line);padding-top:6px;font-weight:700;color:var(--ink)}
+@media (max-width:860px){
+  .gnav{display:none}.glogo{width:auto;flex:1}
+  .shell{flex-direction:column}
+  .side{width:auto;flex-direction:row;align-items:center;flex-wrap:wrap;padding:8px 10px;gap:6px;border-right:0;border-bottom:1px solid var(--line);overflow:visible}
+  .gaea,.side .lbl,.mods button.ext{display:none}
+  .mods{flex-direction:row;order:0;width:auto;height:auto}
+  .side .role{margin:0 0 0 auto;border:0;padding:0;font-size:0;flex-direction:row}
+}
+</style>
+</head>
+<body>
+<header class="gtop">
+  <div class="glogo"><i></i>G-<b>FORCE</b></div>
+  <nav class="gnav"><span>Search</span><span>Buyer</span><span class="on">Seller Central</span><span>Dashboard</span><span>Notices</span><span>Talents</span><span>AI Chat</span></nav>
+  <span class="av" id="meav"></span>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="gaea">GAEA<small>Realty</small><em>Seller Central</em></div>
+  <div class="lbl">Agent workspace</div>
+  <nav class="mods" id="mods"></nav>
+  <div class="role">Demo view as
+    <div class="seg" id="roleseg"></div>
+  </div>
+</aside>
+<div class="main">
+<div class="proto">Prototype · sample data only · nothing is sent, charged or signed</div>
+<div class="sub" id="sub"></div>
+<div id="mapview"><div style="flex:1;position:relative;min-width:0;display:flex"><div id="map"></div><div class="legend" id="legend"></div></div><aside id="panel"></aside></div>
+<main class="page" id="page"></main>
+</div></div>
+<div id="overlay"></div>
+
+<script>
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>'$'+Number(n).toLocaleString();
+const money2=n=>'$'+Number(n).toFixed(2);
+const FEE={flat:10,pct:.04};const gfee=p=>Math.round((FEE.flat+FEE.pct*p)*100)/100;
+const initials=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+let toastT;function toast(m){clearTimeout(toastT);let t=$('.toast');if(!t){t=document.createElement('div');t.className='toast';document.body.append(t)}t.textContent=m;toastT=setTimeout(()=>t.remove(),2600)}
+const ICON={
+ house:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>',
+ key:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/></svg>',
+ cap:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 3 9 3 12 0v-5"/></svg>'
+};
+
+/* ---------- state ---------- */
+const PERSONA={lister:{name:'Avery Lin',label:'Listing agent · G Force member'},host:{name:'Jordan Park',label:'Host agent · not a member'}};
+const S={
+  mod:'exchange', role:'lister', exTab:'map', filter:'all', sel:null, verified:false,
+  pkg:null, pkgTab:'files', signRun:0,
+  stand:{lister:{n:0,st:'good',pn:0},host:{n:1,st:'good',pn:0}},
+  opps:[
+   {id:1,addr:'418 Marisol Court',city:'Palo Alto',price:3280000,beds:4,baths:3,lat:37.4419,lng:-122.1430,type:'openhouse',dir:'pay',base:80,step:15,every:12,cap:170,hrs:30,date:'Sat Nov 14',time:'1:00 – 4:00 PM',lister:'Avery Lin',mine:true,status:'open',access:'Lockbox on the front railing, code sent on the day.',autoAccess:false,
+    apps:[{who:'Priya Raman',rating:4.9,jobs:31},{who:'Marcus Bell',rating:4.7,jobs:12}]},
+   {id:2,addr:'77 Alder Glen Lane',city:'Los Altos',price:4950000,beds:5,baths:4,lat:37.3852,lng:-122.1141,type:'openhouse',dir:'bid',base:60,hrs:8,date:'Sun Nov 15',time:'1:30 – 4:30 PM',lister:'Avery Lin',mine:true,status:'open',first:true,
+    apps:[{who:'Dana Whitfield',rating:5.0,jobs:44,amount:140},{who:'Leo Tanaka',rating:4.8,jobs:19,amount:110},{who:'Sofia Marin',rating:4.6,jobs:7,amount:75}]},
+   {id:3,addr:'2290 Canyon Oak Drive',city:'Mountain View',price:2150000,beds:3,baths:2,lat:37.3861,lng:-122.0839,type:'showing',dir:'pay',base:45,step:10,every:6,cap:95,hrs:13,date:'Thu Nov 12',time:'5:30 PM',lister:'Helen Zhou',status:'open',apps:[]},
+   {id:4,addr:'905 Laurelwood Terrace',city:'Menlo Park',price:5600000,beds:5,baths:5,lat:37.4530,lng:-122.1817,type:'openhouse',dir:'bid',base:100,hrs:20,date:'Sat Nov 14',time:'2:00 – 4:00 PM',lister:'Rafael Ortiz',status:'open',first:true,
+    apps:[{who:'Dana Whitfield',rating:5.0,jobs:44,amount:180},{who:'Nate Kim',rating:4.5,jobs:9,amount:150}]},
+   {id:5,addr:'1630 Brightwater Way',city:'Sunnyvale',price:1890000,beds:3,baths:2,lat:37.3688,lng:-122.0363,type:'openhouse',dir:'pay',base:70,step:20,every:24,cap:150,hrs:50,date:'Sun Nov 15',time:'1:00 – 4:00 PM',lister:'Helen Zhou',status:'open',apps:[]},
+   {id:6,addr:'12 Sequoia Ridge Road',city:'Los Altos Hills',price:7400000,beds:6,baths:6,lat:37.3712,lng:-122.1436,type:'showing',dir:'learn',base:99.99,hrs:5,date:'Fri Nov 13',time:'11:00 AM',lister:'Rafael Ortiz',status:'open',
+    apps:[{who:'Sofia Marin',rating:4.6,jobs:7}]},
+   {id:7,addr:'344 Tidewell Street',city:'Redwood City',price:1640000,beds:3,baths:2,lat:37.4852,lng:-122.2364,type:'showing',dir:'pay',base:40,step:10,every:6,cap:90,hrs:2,date:'Wed Nov 11',time:'6:00 PM',lister:'Mina Castellanos',status:'assigned',assignee:'Jordan Park',access:'Supra lockbox on the side gate. Alarm is off.',autoAccess:true,apps:[{who:'Jordan Park',rating:4.8,jobs:5,you:'host'}]}
+  ],
+  listings:[
+   {addr:'418 Marisol Court',city:'Palo Alto',price:3280000,status:'Active',oh:true,lat:37.4419,lng:-122.1430},
+   {addr:'77 Alder Glen Lane',city:'Los Altos',price:4950000,status:'Coming soon',oh:true,lat:37.3852,lng:-122.1141},
+   {addr:'560 Hawthorne Mews',city:'Palo Alto',price:2725000,status:'Active',oh:false,lat:37.4275,lng:-122.1697}
+  ],
+  payouts:[{who:'host',desc:'Showing · 19 Ferncliff Ave, San Carlos',amount:55,dir:'in',status:'Paid',date:'Nov 4'},
+           {who:'lister',desc:'Open house host · 418 Marisol Court (Priya R.)',amount:95,dir:'out',status:'Paid',date:'Nov 8'}],
+  pkgs:[
+   {id:'p1',addr:'418 Marisol Court',city:'Palo Alto, CA 94301',meta:'$3,280,000 · 4 bd · 3 ba · 2,410 sqft',built:1962,signed:false,ai:true,aiNote:'',
+    files:[
+     {name:'Transfer Disclosure Statement (TDS).pdf',pages:3,size:412e3,date:'Nov 6'},
+     {name:'Seller Property Questionnaire (SPQ).pdf',pages:4,size:520e3,date:'Nov 6'},
+     {name:'Natural Hazard Disclosure Report.pdf',pages:38,size:4.1e6,date:'Nov 5'},
+     {name:'Home Inspection Report.pdf',pages:61,size:9.8e6,date:'Nov 3'},
+     {name:'Termite and Pest Inspection.pdf',pages:14,size:1.9e6,date:'Nov 3'}],
+    viewers:[{name:'Priya Raman',role:'Buyer agent',last:'2 hours ago',dl:true},{name:'Marcus Bell',role:'Buyer agent',last:'Yesterday',dl:false},{name:'T. Okafor',role:'Buyer',last:'Nov 8',dl:true}],
+    activity:[['Nov 9','Priya Raman downloaded the full package'],['Nov 8','T. Okafor viewed Home Inspection Report'],['Nov 6','You uploaded TDS and SPQ'],['Nov 5','AI review flagged 2 items']]},
+   {id:'p2',addr:'77 Alder Glen Lane',city:'Los Altos, CA 94022',meta:'$4,950,000 · 5 bd · 4 ba · 3,620 sqft',built:1998,signed:false,ai:true,aiNote:'',
+    files:[{name:'Preliminary Title Report.pdf',pages:22,size:2.2e6,date:'Nov 9'}],viewers:[],activity:[['Nov 9','You created this package']]}
+  ]
+};
+const DOCS=[
+ {k:'TDS',n:'Transfer Disclosure Statement (TDS)',re:/tds|transfer disclosure/i,sign:['Seller','Listing agent']},
+ {k:'SPQ',n:'Seller Property Questionnaire (SPQ)',re:/spq|seller property q/i,sign:['Seller']},
+ {k:'NHD',n:'Natural Hazard Disclosure (NHD)',re:/nhd|natural hazard/i,sign:['Seller']},
+ {k:'AVID',n:'Agent Visual Inspection Disclosure (AVID)',re:/avid|visual inspection/i,sign:['Listing agent']},
+ {k:'INSP',n:'Home inspection report',re:/home inspection|property inspection/i},
+ {k:'PEST',n:'Pest / termite inspection',re:/pest|termite/i},
+ {k:'PRELIM',n:'Preliminary title report',re:/prelim|title report/i},
+ {k:'LEAD',n:'Lead-based paint disclosure',re:/lead/i,pre78:true,sign:['Seller','Listing agent']}
+];
+const classify=name=>(DOCS.find(d=>d.re.test(name))||{}).k||null;
+const fee=o=>o.dir==='pay'?Math.min(o.cap,o.base+o.step*Math.floor(o.hrs/o.every)):o.base;
+const me=()=>PERSONA[S.role].name;
+const isMine=o=>S.role==='lister'&&o.mine;
+const myApp=o=>o.apps.find(a=>a.you===S.role);
+const DIR={pay:{t:'Pays host',c:'g'},bid:{t:'Host bids',c:''},learn:{t:'Paid shadowing',c:'n'}};
+
+/* ---------- map ---------- */
+let map,layer;
+function initMap(){
+  if(map||!window.L)return;
+  map=L.map('map',{zoomControl:true,attributionControl:true}).setView([37.415,-122.13],11);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
+  layer=L.layerGroup().addTo(map);
+}
+function visibleOpps(){
+  return S.opps.filter(o=>{
+    if(S.filter==='openhouse'||S.filter==='showing')return o.type===S.filter&&o.status==='open';
+    if(S.filter==='pay'||S.filter==='bid'||S.filter==='learn')return o.dir===S.filter&&o.status==='open';
+    if(S.filter==='mine')return isMine(o)||myApp(o);
+    return true;});
+}
+function drawPins(){
+  if(!map)return;layer.clearLayers();
+  visibleOpps().forEach(o=>{
+    const cls=o.status!=='open'?'idle':isMine(o)?'mine':o.dir;
+    const txt=o.status!=='open'?'Filled':o.dir==='pay'?'+'+money(fee(o)):o.dir==='bid'?'Bid '+money(topBid(o)):'Learn '+money(o.base);
+    const ic=o.dir==='learn'?ICON.cap:o.type==='showing'?ICON.key:ICON.house;
+    L.marker([o.lat,o.lng],{icon:L.divIcon({className:'',iconSize:[0,0],html:`<div class="pin ${cls} ${S.sel===o.id?'sel':''}">${ic}${txt}</div>`}),zIndexOffset:S.sel===o.id?1000:0})
+     .on('click',()=>{S.sel=o.id;render()}).addTo(layer);
+  });
+  if(S.role==='lister')S.listings.filter(l=>!S.opps.some(o=>o.addr===l.addr&&o.status==='open')).forEach(l=>{
+    L.marker([l.lat,l.lng],{icon:L.divIcon({className:'',iconSize:[0,0],html:`<div class="pin idle">${ICON.house}My listing</div>`})}).on('click',()=>{S.exTab='listings';render()}).addTo(layer);
+  });
+}
+const topBid=o=>Math.max(o.base,...o.apps.map(a=>a.amount||0));
+
+/* ---------- render ---------- */
+function render(){
+  const nav=[['','Market Trends'],['','My Listings'],['','Marketing Studio'],['','Seller'],['exchange','Open House Exchange'],['disc','Disclosures']];
+  $('#mods').innerHTML=nav.map(([k,t])=>k?`<button data-a="mod" data-v="${k}" class="${S.mod===k?'on':''}">${t}</button>`:`<button class="ext" data-a="toast" data-v="${t} — existing G Force page">${t}</button>`).join('');
+  $('#meav').textContent=initials(me());
+  $('#roleseg').innerHTML=[['lister','Listing agent'],['host','Host agent']].map(([k,t])=>`<button data-a="role" data-v="${k}" class="${S.role===k?'on':''}">${t}</button>`).join('');
+  const showMap=S.mod==='exchange'&&S.exTab==='map';
+  $('#mapview').style.display=showMap?'flex':'none';
+  $('#page').style.display=showMap?'none':'block';
+  if(S.mod==='exchange'){
+    const tabs=[['map','Map'],['listings','My listings'],['gigs','My gigs & payouts']];
+    $('#sub').innerHTML=tabs.map(([k,t])=>`<button data-a="extab" data-v="${k}" class="${S.exTab===k?'on':''}">${t}</button>`).join('')+
+      `<span class="who">${esc(me())} · ${PERSONA[S.role].label}${S.role==='host'?(S.verified?' · <span class="tag g">Verified</span>':' · <span class="tag r">Not verified</span>'):''}</span>`;
+    if(showMap){initMap();setTimeout(()=>map&&map.invalidateSize(),0);drawPins();renderPanel();renderLegend()}
+    else $('#page').innerHTML=S.exTab==='listings'?viewListings():viewGigs();
+  }else{
+    const p=S.pkgs.find(p=>p.id===S.pkg);
+    $('#sub').innerHTML=p?`<button data-a="pkg" data-v="">← All packages</button>`+[['files','Files'],['ai','AI review'],['sign','Signing'],['viewers','Viewers'],['activity','Activity'],['settings','Settings']].map(([k,t])=>`<button data-a="pkgtab" data-v="${k}" class="${S.pkgTab===k?'on':''}">${t}</button>`).join('')
+      :`<button class="on">Disclosure packages</button><span class="who">${esc(me())}</span>`;
+    $('#page').innerHTML=p?viewPkg(p):viewPkgs();
+    bindDrop();
+  }
+}
+function renderLegend(){
+  $('#legend').innerHTML=`<span><i class="dot" style="background:var(--ok)"></i>Open to host · you get paid</span><span><i class="dot" style="background:var(--gold)"></i>Bidding · hosts pay to host</span><span><i class="dot" style="background:#fff;border:1.5px solid var(--gold)"></i>Paid shadowing</span>${S.role==='lister'?'<span><i class="dot" style="background:var(--ink)"></i>My posted opportunities</span>':''}<span><i class="dot" style="background:#d9d2c1"></i>Filled / not posted</span>`;
+}
+function renderPanel(){
+  const o=S.opps.find(o=>o.id===S.sel);
+  if(o){$('#panel').innerHTML=oppDetail(o);return}
+  const f=[['all','All'],['openhouse','Open houses'],['showing','Showings'],['pay','Paying'],['bid','Bidding'],['learn','Shadowing'],['mine','Mine']];
+  const list=visibleOpps();
+  $('#panel').innerHTML=`<div class="eyebrow">Open House Exchange</div><h2>Opportunities near you</h2>
+   <div class="chips">${f.map(([k,t])=>`<button class="chip ${S.filter===k?'on':''}" data-a="filter" data-v="${k}">${t}</button>`).join('')}</div>
+   ${list.map(o=>`<button class="card opp" data-a="sel" data-v="${o.id}">
+      <div class="row" style="flex-wrap:nowrap"><div style="min-width:0"><b>${esc(o.addr)}</b><div class="muted small">${o.city} · ${money(o.price)} · ${o.beds} bd</div></div><span class="sp"></span>${amount(o)}</div>
+      <div class="row" style="margin-top:8px;gap:6px"><span class="tag d">${o.type==='openhouse'?'Open house':'Showing'}</span>${o.status==='open'?`<span class="tag ${DIR[o.dir].c}">${DIR[o.dir].t}</span>`:'<span class="tag n">Filled</span>'}${o.first?'<span class="tag r">First weekend</span>':''}${isMine(o)?'<span class="tag n">Yours</span>':''}<span class="sp"></span><span class="muted small">${o.date}</span></div>
+    </button>`).join('')||'<p class="muted">Nothing matches this filter.</p>'}`;
+}
+function amount(o){
+  if(o.status!=='open')return '<span class="muted small">Assigned</span>';
+  if(o.dir==='pay')return `<span class="amt earn">+${money(fee(o))}</span>`;
+  if(o.dir==='bid')return `<span class="amt pay">${money(topBid(o))}</span>`;
+  return `<span class="amt pay">${money(o.base)}</span>`;
+}
+function oppDetail(o){
+  const mine=isMine(o),app=myApp(o),open=o.status==='open';
+  let rule='';
+  if(o.dir==='pay'){
+    const n=Math.round((o.cap-o.base)/o.step)+1,cur=Math.min(n-1,Math.floor(o.hrs/o.every));
+    const left=o.every-(o.hrs%o.every);
+    rule=`<div class="card" style="padding:14px;margin:14px 0"><div class="row"><b>Auto-raise rule</b><span class="sp"></span><span class="muted small">posted ${o.hrs}h ago</span></div>
+      <div class="esc">${Array.from({length:n},(_,i)=>`<i class="${i<cur?'past':i===cur?'now':''}" style="height:${30+70*i/(n-1||1)}%"></i>`).join('')}</div>
+      <div class="small muted">Starts at ${money(o.base)}, +${money(o.step)} every ${o.every}h with no taker, capped at ${money(o.cap)}. ${fee(o)<o.cap&&open?`Next raise in ${left}h.`:open?'At cap.':''}</div>
+      ${open?`<button class="btn ghost sm" style="margin-top:8px" data-a="tick" data-v="${o.id}">Demo: skip ahead ${o.every}h</button>`:''}</div>`;
+  }else if(o.dir==='bid'){
+    rule=`<div class="note" style="margin:14px 0">High-demand open house. Hosts bid what they will pay for the slot (minimum ${money(o.base)}). ${open?`Bidding closes in ${Math.max(0,24-o.hrs)}h. The highest bid wins automatically, unless the listing agent picks someone sooner.`:'Bidding is closed.'}${open&&o.apps.length?` <button class="btn ghost sm" data-a="closebid" data-v="${o.id}">Demo: skip to close</button>`:''}</div>`;
+  }else{
+    rule=`<div class="note" style="margin:14px 0">Paid shadowing: ${esc(o.lister)} is a verified mentor offering a seat at this ${o.type==='openhouse'?'open house':'showing'}. A learner pays ${money(o.base)} to come along; the mentor approves who joins.</div>`;
+  }
+  const apps=[...o.apps].sort((a,b)=>(b.amount||0)-(a.amount||0));
+  const appsHtml=apps.length?apps.map(a=>`<div class="bidrow"><span class="av">${initials(a.who)}</span><div style="min-width:0"><b>${esc(a.who)}${a.you===S.role?' (you)':''}</b><div class="muted small">★ ${a.rating} · ${a.jobs} completed</div></div><span class="sp"></span>
+      ${o.dir==='bid'?`<b class="num">${money(a.amount)}</b>`:''}
+      ${mine&&open?`<button class="btn sm gold" data-a="approve" data-v="${o.id}|${esc(a.who)}">Approve</button>`:o.assignee===a.who?'<span class="tag g">Approved</span>':''}</div>`).join('')
+    :'<p class="muted small">No one has applied yet.</p>';
+  const accOut=o.access&&(o.autoAccess||o.accessSent);
+  const accHost=accOut?`<div class="card" style="padding:14px;margin-top:8px"><b>Access details</b><div class="muted small" style="margin-top:4px">${esc(o.access)}</div></div>`:'<div class="small muted" style="margin-top:8px">The listing agent will email access details to you directly.</div>';
+  const accMine=o.status!=='assigned'?'':accOut?`<div class="small muted" style="margin-top:8px">Access details were emailed to ${esc(o.assignee)}.</div>`:`<button class="btn ghost sm" style="margin-top:8px" data-a="sendaccess" data-v="${o.id}">Send access details</button>`;
+  let cta='';
+  if(mine){
+    cta=open?'':`<button class="btn gold" style="width:100%" data-a="complete" data-v="${o.id}">Mark completed · release payment</button>
+      <div class="row" style="margin-top:8px"><button class="btn ghost sm" data-a="cancel" data-v="${o.id}">Cancel booking</button><button class="btn ghost sm" data-a="noshow" data-v="${o.id}">Report no-show</button></div>${accMine}`;
+    if(o.status==='done')cta='<div class="note">Completed. Automatic payment is coming soon.</div>';
+  }else if(!open){
+    cta=o.assignee===me()?'<div class="note">You are confirmed for this one. Payout releases after the listing agent marks it completed. Buyers you meet there are your clients. Tell every visitor that you are not the listing agent.</div>'+accHost+'<button class="btn ghost" style="width:100%;margin-top:8px" data-a="toast" data-v="Opens Add client — the visitor is saved to your G Force Clients">Add a visitor to my clients</button><button class="btn ghost sm" style="margin-top:8px" data-a="cancel" data-v="'+o.id+'">Cancel my commitment</button>':'<div class="note">This opportunity has been filled.</div>';
+  }else if(app){
+    cta=`<div class="note">Application sent${app.amount?` · your bid ${money(app.amount)}`:''}. Waiting for ${esc(o.lister)} to approve. <button class="btn ghost sm" data-a="withdraw" data-v="${o.id}">Withdraw</button></div>`;
+  }else if(o.dir==='bid'){
+    cta=`<div class="row" style="flex-wrap:nowrap"><input type="number" id="bidamt" min="${o.base}" step="5" value="${topBid(o)+10}" aria-label="Your bid in dollars"><button class="btn gold" data-a="apply" data-v="${o.id}">Place bid</button></div>`;
+  }else{
+    cta=`<button class="btn gold" style="width:100%" data-a="apply" data-v="${o.id}">${o.dir==='pay'?`Offer to host · you receive ${money2(fee(o)-gfee(fee(o)))}`:`Request to shadow · pay ${money(o.base)}`}</button>`;
+  }
+  const P=o.dir==='pay'?fee(o):o.dir==='bid'?topBid(o):o.base;
+  const payer=o.dir==='pay'?'Listing agent':o.dir==='bid'?'Winning host':'Learner',payee=o.dir==='pay'?'Host':o.dir==='bid'?'Listing agent':'Mentor';
+  return `<button class="btn ghost sm" data-a="sel" data-v="">← Back to list</button>
+    <div style="margin-top:14px" class="row"><span class="tag d">${o.type==='openhouse'?'Open house':'Showing'}</span><span class="tag ${DIR[o.dir].c}">${DIR[o.dir].t}</span>${o.first?'<span class="tag r">First weekend</span>':''}${o.dir==='learn'?'<span class="tag g">Verified mentor</span>':''}</div>
+    <h2 style="margin-top:8px">${esc(o.addr)}</h2><div class="muted">${o.city} · ${money(o.price)} · ${o.beds} bd / ${o.baths} ba</div>
+    <dl class="kv"><dt>When</dt><dd>${o.date} · ${o.time}</dd><dt>${o.dir==='learn'?'Mentor':'Listing agent'}</dt><dd>${esc(o.lister)}${mine?' (you)':''}</dd>
+      <dt>${o.dir==='pay'?'Current fee to host':o.dir==='bid'?'Top bid':'Shadowing fee'}</dt><dd>${amount(o)}</dd></dl>
+    ${rule}
+    <div class="card" style="padding:14px;margin:0 0 16px"><b>Where the money goes</b><div class="split" style="margin-top:8px">
+      <span>${payer} pays</span><span class="num">${money2(P)}</span>
+      <span class="muted">G Force fee · $${FEE.flat} + ${FEE.pct*100}%</span><span class="num muted">−${money2(gfee(P))}</span>
+      <span class="tot">${payee} receives</span><span class="num tot">${money2(P-gfee(P))}</span></div>
+      <div class="small muted" style="margin-top:8px">Charged only after the job is marked completed. Card processing is included in the fee.</div></div>
+    <h3>${o.dir==='bid'?'Bids':'Applicants'} <span class="muted small" style="font-family:var(--sans)">(${apps.length})</span></h3>
+    ${appsHtml}<div style="margin-top:16px">${cta}</div>`;
+}
+
+function viewListings(){
+  if(S.role!=='lister')return `<div class="wrap"><div class="card" style="padding:32px;text-align:center;max-width:560px;margin:40px auto">
+    <div class="eyebrow">Members only</div><h2 style="margin:6px 0 10px">Posting requires a G Force membership</h2>
+    <p class="muted">Anyone verified can host open houses and showings. To post your own listings for hosting, upgrade inside G Force.</p>
+    <button class="btn gold" data-a="toast" data-v="Opens G Force membership page">See membership plans</button></div></div>`;
+  return `<div class="wrap"><div class="row"><div><div class="eyebrow">Seller Center</div><h1>My listings</h1></div><span class="sp"></span></div>
+   <p class="muted">Switch on “Open house needed” to show a listing on the exchange map, then post the slot and how it pays.</p>
+   <div class="card" style="overflow:auto;margin-top:16px"><table><tr><th>Listing</th><th>Status</th><th>Open house needed</th><th>Posted opportunities</th><th></th></tr>
+   ${S.listings.map((l,i)=>{const os=S.opps.filter(o=>o.addr===l.addr&&o.mine);return `<tr><td><b>${esc(l.addr)}</b><div class="muted small">${l.city} · ${money(l.price)}</div></td>
+     <td><span class="tag ${l.status==='Active'?'g':''}">${l.status}</span></td>
+     <td><button class="switch ${l.oh?'on':''}" data-a="oh" data-v="${i}" role="switch" aria-checked="${l.oh}" aria-label="Open house needed"></button></td>
+     <td>${os.map(o=>`<div><button class="btn ghost sm" data-a="goopp" data-v="${o.id}">${o.date} · ${o.status==='open'?(o.apps.length+' applicant'+(o.apps.length===1?'':'s')):o.status==='assigned'?'Assigned to '+esc(o.assignee):'Completed'}</button></div>`).join('')||'<span class="muted small">None</span>'}</td>
+     <td class="right"><button class="btn sm" ${l.oh?'':'disabled'} data-a="post" data-v="${i}">Post opportunity</button></td></tr>`}).join('')}
+   </table></div></div>`;
+}
+function viewGigs(){
+  const mine=S.opps.filter(o=>myApp(o)), pay=S.payouts.filter(p=>p.who===S.role);
+  const st=o=>o.status==='done'?'<span class="tag n">Completed</span>':o.assignee===me()?'<span class="tag g">Approved</span>':o.status==='open'?'<span class="tag">Pending approval</span>':'<span class="tag n">Not selected</span>';
+  const tin=pay.filter(p=>p.dir==='in').reduce((a,p)=>a+p.amount,0),tout=pay.filter(p=>p.dir==='out').reduce((a,p)=>a+p.amount,0);
+  return `<div class="wrap"><div class="eyebrow">Open House Exchange</div><h1>My gigs & payouts</h1>
+   ${S.role==='host'&&!S.verified?`<div class="note row" style="margin-top:14px"><span>Add a payment method to verify your identity before applying. You are not charged for hosting.</span><span class="sp"></span><button class="btn gold sm" data-a="verify">Verify now</button></div>`:''}
+   ${standCard()}
+   <div class="grid3" style="margin:18px 0">
+     <div class="card" style="padding:16px"><div class="muted small">Earned</div><div class="amt earn">${money(tin)}</div></div>
+     <div class="card" style="padding:16px"><div class="muted small">Paid out</div><div class="amt pay">${money(tout)}</div></div>
+     <div class="card" style="padding:16px"><div class="muted small">Active applications</div><div class="amt">${mine.filter(o=>o.status!=='done').length}</div></div></div>
+   <h3>Applications & assignments</h3>
+   <div class="card" style="overflow:auto;margin:10px 0 24px"><table><tr><th>Property</th><th>Type</th><th>When</th><th>Amount</th><th>Status</th></tr>
+   ${mine.map(o=>`<tr><td><button class="btn ghost sm" data-a="goopp" data-v="${o.id}">${esc(o.addr)}</button></td><td>${o.type==='openhouse'?'Open house':'Showing'} · ${DIR[o.dir].t}</td><td>${o.date} · ${o.time}</td><td class="num">${o.dir==='pay'?'+'+money(fee(o)):'−'+money(myApp(o).amount||o.base)}</td><td>${st(o)}</td></tr>`).join('')||'<tr><td colspan="5" class="muted">No applications yet. Find opportunities on the map.</td></tr>'}
+   </table></div>
+   <div class="row"><h3>Payment history</h3><span class="sp"></span><button class="btn ghost sm" data-a="soon" data-v="Payout method setup">Payout method</button></div>
+   <div class="card" style="overflow:auto;margin-top:10px"><table><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr>
+   ${pay.map(p=>`<tr><td>${p.date}</td><td>${esc(p.desc)}</td><td class="num">${p.dir==='in'?'+':'−'}${money(p.amount)}</td><td><span class="tag ${p.status==='Paid'?'g':''}">${p.status}</span></td></tr>`).join('')||'<tr><td colspan="4" class="muted">No payments yet.</td></tr>'}
+   </table></div></div>`;
+}
+
+/* ---------- disclosures ---------- */
+function checklist(p){
+  return DOCS.filter(d=>!d.pre78||p.built<1978).map(d=>({...d,file:p.files.find(f=>classify(f.name)===d.k)}));
+}
+function viewPkgs(){
+  return `<div class="wrap"><div class="row"><div><div class="eyebrow">Disclosures</div><h1>Disclosure packages</h1></div><span class="sp"></span><button class="btn gold" data-a="newpkg">New package</button></div>
+   <p class="muted small" style="margin-top:10px">Disclosure packages are included with your G Force membership.</p>
+   <div class="pkgs">${S.pkgs.map(p=>{const c=checklist(p),n=c.filter(x=>x.file).length;return `<button class="card pkg" data-a="pkg" data-v="${p.id}"><div class="ph">${esc(p.addr)}</div><div class="bd">
+     <div class="muted small">${esc(p.city)}</div><div class="row" style="margin-top:8px"><span class="tag ${n===c.length?'g':''}">${n}/${c.length} required docs</span><span class="tag ${p.signed?'g':'n'}">${p.signed?'Signed':'Not signed'}</span><span class="sp"></span><span class="muted small">${p.files.length} files · ${p.viewers.length} viewers</span></div>
+     <div class="bar"><i style="width:${100*n/c.length}%"></i></div></div></button>`}).join('')}</div></div>`;
+}
+function viewPkg(p){
+  const head=`<div class="row" style="margin-bottom:18px"><div><div class="eyebrow">Disclosure package</div><h1>${esc(p.addr)}</h1><div class="muted">${esc(p.city)}${p.meta?' · '+esc(p.meta):''}</div></div><span class="sp"></span>
+    <button class="btn ghost" data-a="toast" data-v="Download all — zips every file in order">Download all</button><button class="btn" data-a="share">Share package</button></div>`;
+  let body='';
+  if(S.pkgTab==='files'){
+    body=`<div class="drop" id="drop"><b style="color:var(--ink)">Drag PDFs here</b> or <button class="btn ghost sm" data-a="pick">choose files</button><div class="small" style="margin-top:6px">AI names and sorts each document, and updates the checklist.</div><input type="file" id="fileinp" accept="application/pdf,.pdf" multiple hidden></div>
+     <div class="row" style="margin-bottom:10px"><h3>Files <span class="muted small" style="font-family:var(--sans)">(${p.files.length})</span></h3><span class="sp"></span><button class="btn ghost sm" data-a="autosort">AI sort order</button><button class="btn ghost sm" data-a="toast" data-v="Stamp & merge — one stamped PDF of the whole package">Stamp & merge</button><button class="btn ghost sm" data-a="toast" data-v="Viewers notified of updates">Notify viewers</button></div>
+     <div class="card">${p.files.map((f,i)=>{const k=classify(f.name);return `<div class="file"><div class="thumb">PDF</div><div style="min-width:0;flex:1"><div class="nm">${esc(f.name)}</div>
+        <div class="muted small">${f.pages?f.pages+' pages · ':''}${(f.size/1e6).toFixed(f.size<1e5?2:1)} MB · ${f.date} ${k?`· <span class="tag">${k}</span>`:'· <span class="tag n">Other</span>'}</div>
+        <div class="acts"><button class="btn ghost sm" data-a="open" data-v="${i}">Open</button><button class="btn ghost sm" data-a="summary" data-v="${i}">AI summary</button><button class="btn ghost sm" data-a="rename" data-v="${i}">Rename</button><button class="btn ghost sm" data-a="mv" data-v="${i}|-1" ${i?'':'disabled'} aria-label="Move up">↑</button><button class="btn ghost sm" data-a="mv" data-v="${i}|1" ${i<p.files.length-1?'':'disabled'} aria-label="Move down">↓</button><button class="btn ghost sm danger" data-a="del" data-v="${i}">Delete</button></div></div></div>`}).join('')||'<div class="file muted">No files yet.</div>'}</div>`;
+  }else if(S.pkgTab==='ai'){
+    const c=checklist(p),miss=c.filter(x=>!x.file);
+    body=`<div class="grid2"><div><h3 style="margin-bottom:10px">Required documents</h3><div class="card">${c.map(x=>`<div class="check"><span class="ic ${x.file?'ok':'no'}">${x.file?'✓':'!'}</span><div><b>${x.n}</b><div class="muted small">${x.file?esc(x.file.name):'Missing — upload to complete the package'}</div></div></div>`).join('')}</div>
+      ${p.built<1978?`<p class="small muted">Built ${p.built}: lead-based paint disclosure is required.</p>`:''}</div>
+      <div><h3 style="margin-bottom:10px">AI findings</h3><div class="card">${p.files.length>2?`
+        <div class="check"><span class="ic wa">!</span><div><b>SPQ and inspection disagree on roof leaks</b><div class="muted small">SPQ item 8B answers “No”; inspection p.23 notes prior staining in the hall ceiling. Confirm with seller.</div></div></div>
+        <div class="check"><span class="ic wa">!</span><div><b>TDS section II-C left blank</b><div class="muted small">Seller initials missing on page 2.</div></div></div>
+        <div class="check"><span class="ic ok">✓</span><div><b>Pest report: Section 1 items total $4,850</b><div class="muted small">Summarised for the buyer-facing cover sheet.</div></div></div>`
+        :`<div class="check muted">Upload more documents to run a cross-document review.</div>`}</div>
+        <div class="note" style="margin-top:12px">${miss.length?`${miss.length} document${miss.length>1?'s':''} still missing: ${miss.map(m=>m.k).join(', ')}.`:'Package is complete and ready for signing.'}</div>
+        <button class="btn ghost" style="margin-top:12px" data-a="toast" data-v="Ask AI — chat about this package (wired to G Force AI Chat)">Ask AI about this package</button></div></div>`;
+  }else if(S.pkgTab==='sign'){
+    const docs=checklist(p).filter(x=>x.sign&&x.file);
+    if(!p.parties)p.parties=[{name:'Sample Seller',role:'Seller',email:'seller@example.com'},{name:'Second Seller',role:'Seller',email:'seller2@example.com'},{name:PERSONA.lister.name,role:'Listing agent',email:'agent@example.com'}];
+    const stepsT=['Uploading '+docs.length+' documents','Building package · AI tags signature, initials, date and print-name fields','QA · tagging, completeness, data accuracy','Package ready for your review'];
+    const ready=S.signRun>=4;
+    body=`<div class="row"><div><h3>Prepare for signature</h3><div class="muted">AI tags every signature, initials and date field for the right signer and runs QA. Nothing goes out until you approve.</div></div><span class="sp"></span>
+      ${p.signed?'<span class="tag g">Sent for signature</span>':ready?`<button class="btn ghost" data-a="toast" data-v="Opens the tagged pages for review, inside G Force">Review package</button><button class="btn gold" data-a="soon" data-v="Sending for signature">Approve & send</button>`:`<button class="btn gold" data-a="runsign" ${docs.length&&!S.signRun?'':'disabled'}>Prepare for signature</button>`}</div>
+      ${S.signRun&&!p.signed?`<div class="card steps" style="padding:14px">${stepsT.map((t,i)=>`<div class="step ${i<S.signRun?'done':i===S.signRun?'run':''}">${i<S.signRun?'✓':i===S.signRun?'<span class="spin"></span>':'○'} ${t}</div>`).join('')}</div>`:''}
+      ${ready||p.signed?`<div class="grid3" style="margin-top:14px"><div class="card" style="padding:14px"><div class="muted small">QA errors</div><div class="amt earn">0</div></div><div class="card" style="padding:14px"><div class="muted small">Warnings to glance at</div><div class="amt pay">3</div></div><div class="card" style="padding:14px"><div class="muted small">Auto-fixes applied</div><div class="amt">1</div></div></div>`:''}
+      <div class="row" style="margin:20px 0 10px"><h3>Signers</h3><span class="sp"></span>${p.signed?'':'<button class="btn ghost sm" data-a="addparty">Add signer</button>'}</div>
+      <div class="card" style="overflow:auto"><table><tr><th>Name</th><th>Role</th><th>Email</th><th>Status</th></tr>
+      ${p.parties.map((s,i)=>`<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.role)}</td><td>${esc(s.email)}</td><td>${p.signed?`<span class="tag">Awaiting signature</span> <button class="btn ghost sm" data-a="toast" data-v="Signing link copied (sample)">Copy link</button>`:`<button class="btn ghost sm danger" data-a="delparty" data-v="${i}">Remove</button>`}</td></tr>`).join('')}
+      </table></div>
+      <h3 style="margin:20px 0 10px">Documents to sign</h3>
+      <div class="card" style="overflow:auto"><table><tr><th>Document</th><th>Signed by</th><th>Fields</th><th>Status</th></tr>
+      ${docs.map((d,i)=>`<tr><td><b>${d.k}</b><div class="muted small">${esc(d.file.name)}</div></td><td>${d.sign.join(', ')}</td><td class="num">${S.signRun>=2||p.signed?(6+i*4)+' tagged':'—'}</td><td>${p.signed?'<span class="tag">Out for signature</span>':ready?'<span class="tag g">QA passed</span>':'<span class="tag n">Not prepared</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">No signable documents uploaded yet (TDS, SPQ, NHD, AVID, lead paint).</td></tr>'}
+      </table></div>
+      <div class="note" style="margin-top:14px">Prototype: counts and statuses are simulated. Signed copies and the audit trail are saved back to this package.</div>`;
+  }else if(S.pkgTab==='viewers'){
+    body=`<div class="row" style="margin-bottom:10px"><h3>Viewers</h3><span class="sp"></span><button class="btn ghost sm" data-a="toast" data-v="Viewer list exported as CSV">Download viewers</button></div>
+     <div class="card" style="overflow:auto"><table><tr><th>Name</th><th>Role</th><th>Last viewed</th><th>Downloaded</th></tr>${p.viewers.map(v=>`<tr><td><b>${esc(v.name)}</b></td><td>${v.role}</td><td>${v.last}</td><td>${v.dl?'<span class="tag g">Yes</span>':'<span class="tag n">No</span>'}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">No one has opened this package yet. Share it to get started.</td></tr>'}</table></div>`;
+  }else if(S.pkgTab==='activity'){
+    body=`<h3 style="margin-bottom:10px">Activity</h3><div class="card">${p.activity.map(a=>`<div class="check"><span class="muted small" style="width:52px;flex:none">${a[0]}</span><div>${esc(a[1])}</div></div>`).join('')}</div>`;
+  }else{
+    body=`<h3 style="margin-bottom:10px">Settings</h3><div class="card" style="padding:16px;display:grid;gap:16px">
+      <div class="row" style="flex-wrap:nowrap"><div><b>AI summaries for buyer agents</b><div class="muted small">Let viewers see AI summaries and ask questions about this package.</div></div><span class="sp"></span><button class="switch ${p.ai?'on':''}" data-a="aitoggle" role="switch" aria-checked="${p.ai}" aria-label="AI for buyer agents"></button></div>
+      <label class="f">AI instructions for this property<textarea rows="3" id="ainote" placeholder="e.g. The roof was replaced in 2023; permits are on file.">${esc(p.aiNote)}</textarea></label>
+      <div class="row"><button class="btn sm" data-a="savenote">Save instructions</button><span class="sp"></span><button class="btn ghost sm danger" data-a="toast" data-v="Archive — revokes outside access, restorable any time">Archive package</button></div></div>`;
+  }
+  return `<div class="wrap">${head}${body}</div>`;
+}
+function bindDrop(){
+  const d=$('#drop');if(!d)return;
+  ['dragenter','dragover'].forEach(e=>d.addEventListener(e,ev=>{ev.preventDefault();d.classList.add('over')}));
+  ['dragleave','drop'].forEach(e=>d.addEventListener(e,ev=>{ev.preventDefault();d.classList.remove('over')}));
+  d.addEventListener('drop',ev=>addFiles(ev.dataTransfer.files));
+  $('#fileinp').addEventListener('change',ev=>addFiles(ev.target.files));
+}
+function addFiles(list){
+  const p=S.pkgs.find(p=>p.id===S.pkg);let n=0,skip=0;
+  [...list].forEach(f=>{if(!/\.pdf$/i.test(f.name)&&f.type!=='application/pdf'){skip++;return}
+    p.files.push({name:f.name,size:f.size,date:'Today',url:URL.createObjectURL(f)});n++});
+  if(n)p.activity.unshift(['Today',`You uploaded ${n} file${n>1?'s':''}`]);
+  toast(n?`${n} file${n>1?'s':''} added${skip?` · ${skip} skipped (PDF only)`:''}`:'Only PDF files are accepted');
+  render();
+}
+
+/* ---------- modals ---------- */
+function modal(html){$('#overlay').innerHTML=html?`<div class="scrim" data-a="close"><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`:''}
+function postForm(i){
+  const l=S.listings[i];
+  modal(`<div class="eyebrow">Post opportunity</div><h2>${esc(l.addr)}</h2>
+   <div class="grid2" style="margin-top:14px"><label class="f">Type<select id="pf-type"><option value="openhouse">Open house</option><option value="showing">Showing</option></select></label>
+   <label class="f">How it pays<select id="pf-dir" onchange="pfDir()"><option value="pay">I pay the host</option><option value="bid">Hosts bid to host (they pay me)</option><option value="learn">Paid shadowing (I mentor, a learner pays me)</option></select></label>
+   <label class="f">Date<input type="text" id="pf-date" value="Sat Nov 21"></label><label class="f">Time<input type="text" id="pf-time" value="1:00 – 4:00 PM"></label>
+   <label class="f"><span id="pf-baselbl">Starting fee ($)</span><input type="number" id="pf-base" value="80" min="0" step="5"></label><span></span></div>
+   <label class="f" style="margin-top:10px">Access details (optional)<input type="text" id="pf-access" placeholder="Lockbox code, gate code, entry notes"></label>
+   <label class="row small" style="margin-top:8px;gap:8px;flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" id="pf-autoaccess" checked style="width:auto;margin-top:2px"><span>Email these to the host automatically when I approve them. Untick to send them yourself later.</span></label>
+   <div id="pf-esc" class="card" style="padding:14px;margin-top:14px"><b>Auto-raise if nobody takes it</b>
+     <div class="grid3" style="margin-top:8px"><label class="f">Raise by ($)<input type="number" id="pf-step" value="15" min="0" step="5"></label><label class="f">Every (hours)<input type="number" id="pf-every" value="12" min="1"></label><label class="f">Cap ($)<input type="number" id="pf-cap" value="170" min="0" step="5"></label></div></div>
+   <label class="row small" style="margin-top:14px;gap:8px;flex-wrap:nowrap;align-items:flex-start"><input type="checkbox" id="pf-consent" style="width:auto;margin-top:2px"><span>The seller has agreed in writing that an agent from another brokerage may host, and I will follow MLS open house and lockbox rules.</span></label>
+   <p class="small muted" style="margin:12px 0 0">G Force fee is $10 + 4% of the final amount, taken from the payout when the job is completed. Posting is free. Paid shadowing is open to verified mentors: 12+ closed sales in the past 12 months, or approved by Gaea.</p>
+   <div class="row" style="margin-top:18px"><span class="sp"></span><button class="btn ghost" data-a="closebtn">Cancel</button><button class="btn gold" data-a="publish" data-v="${i}">Publish to map</button></div>`);
+}
+window.pfDir=()=>{const d=$('#pf-dir').value;$('#pf-esc').style.display=d==='pay'?'block':'none';$('#pf-baselbl').textContent=d==='pay'?'Starting fee ($)':d==='bid'?'Minimum bid ($)':'Shadowing fee ($49.99 – $499.99)'};
+function rateModal(who){modal(`<div class="eyebrow">Rate each other</div><h2>How was ${esc(who)}?</h2><p class="muted">Both sides rate after every job. Ratings appear on profiles once both are in.</p><div class="row" style="margin:14px 0">${[1,2,3,4,5].map(n=>`<button class="btn ghost" data-a="rate" data-v="${n}" aria-label="${n} stars">${'★'.repeat(n)}</button>`).join('')}</div><div class="row"><span class="sp"></span><button class="btn ghost" data-a="closebtn">Later</button></div>`)}
+/* ---------- standing: strikes, suspension, appeal, revocation ---------- */
+const STAND={good:['g','Good standing'],suspended:['r','Suspended'],probation:['','Reinstated · probation'],revoked:['r','Revoked']};
+const blocked=()=>['suspended','revoked'].includes(S.stand[S.role].st);
+function strike(role,k){const s=S.stand[role];if(s.st==='good'){s.n+=k;if(s.n>=3)s.st='suspended'}else if(s.st==='probation'){s.pn+=k;if(s.pn>=2)s.st='revoked'}}
+const isLate=o=>(+(o.date.match(/\d+/)||[99])[0])-10<=1; /* demo clock: today is Nov 10 */
+function standCard(){
+  const s=S.stand[S.role],[c,t]=STAND[s.st];
+  const dots=(n,of)=>Array.from({length:of},(_,i)=>`<i class="sdot ${i<n?'on':''}"></i>`).join('');
+  const body=s.st==='good'?`<span>${dots(s.n,3)}</span><span class="muted small">${Math.min(s.n,3)} of 3 strikes in the last 6 months</span>`
+   :s.st==='suspended'?`<span class="muted small">3 strikes in 6 months. Posting, applying and bidding are paused until an appeal is approved.</span><button class="btn gold sm" data-a="appeal">Appeal</button>`
+   :s.st==='probation'?`<span>${dots(s.pn,2)}</span><span class="muted small">${Math.min(s.pn,2)} of 2 strikes since reinstatement. The second one revokes access.</span>`
+   :`<span class="muted small">Access to the exchange has been permanently removed.</span>`;
+  return `<div class="card row" style="padding:14px 16px;margin-top:14px"><b>Account standing</b><span class="tag ${c}">${t}</span>${body}<span class="sp"></span><button class="btn ghost sm" data-a="policy">Cancellation policy</button></div>`;
+}
+function policyModal(){
+  modal(`<div class="eyebrow">Open House Exchange</div><h2>Cancellation policy</h2>
+   <p class="muted">The same rules apply to both sides of a confirmed booking.</p>
+   <dl class="kv" style="margin:14px 0"><dt>24h or more before</dt><dd>Free cancellation, no strike</dd><dt>Inside 24h</dt><dd>1 strike</dd><dt>No-show</dt><dd>2 strikes, no payment collected</dd>
+   <dt>3 strikes in 6 months</dt><dd>Account suspended</dd><dt>Appeal</dt><dd>Reviewed by Gaea; if reinstated, 2 more strikes revoke access</dd><dt>Revoked</dt><dd>Permanent. No further bookings on the exchange</dd></dl>
+   <p class="small muted">Strikes expire 6 months after they are issued. Gaea can waive a strike for a documented emergency.</p>
+   <div class="row"><span class="sp"></span><button class="btn" data-a="closebtn">Close</button></div>`);
+}
+function cancelModal(id){
+  const o=S.opps.find(o=>o.id==id),late=isLate(o);
+  modal(`<div class="eyebrow">Cancel booking</div><h2>${esc(o.addr)}</h2><p class="muted">${o.date} · ${o.time}</p>
+   <div class="note" style="margin:14px 0">${late?'This starts in under 24 hours. Cancelling now adds <b>1 strike</b> to your account.':'More than 24 hours away. You can cancel with no strike.'} The slot goes back on the map and the other agent is notified.</div>
+   <div class="row"><button class="btn ghost sm" data-a="policy">View policy</button><span class="sp"></span><button class="btn ghost" data-a="closebtn">Keep booking</button><button class="btn gold" data-a="docancel" data-v="${o.id}">Cancel booking</button></div>`);
+}
+function verifyModal(then){
+  modal(`<div class="eyebrow">Identity check</div><h2>Add a payment method to continue</h2>
+   <p class="muted">Hosts do not need a G Force membership. A card on file verifies who you are and is only charged if you win a paid bid or book paid shadowing.</p>
+   <div class="grid2" style="margin-top:14px"><label class="f">DRE license number<input type="text" id="vf-dre" placeholder="8 digits"></label><label class="f">Brokerage<input type="text" id="vf-brk" placeholder="Brokerage name"></label></div>
+   <label class="f" style="margin-top:10px">Broker or office manager email<input type="text" id="vf-bem" placeholder="They are notified and can authorize direct payment"></label>
+   <p class="small muted" style="margin:8px 0 0">Your license is checked against DRE records. Earnings are paid to your brokerage unless your broker authorizes direct payment to you. A W-9 is collected before your first payout.</p>
+   <button class="card" style="padding:14px;margin:14px 0;width:100%;text-align:left;cursor:pointer;font:inherit;color:var(--muted)" data-a="soon" data-v="Card verification">Secure card form appears here. The card is verified, not charged. <span class="tag">Coming soon</span></button>
+   <div class="row"><span class="sp"></span><button class="btn ghost" data-a="closebtn">Not now</button><button class="btn gold" data-a="doverify" data-v="${then||''}">Simulate verification</button></div>`);
+}
+
+/* ---------- actions ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-a]');if(!t)return;
+  const a=t.dataset.a,v=t.dataset.v;
+  if(a==='close'){if(e.target===t)modal('');return}
+  const p=S.pkgs.find(p=>p.id===S.pkg);
+  const A={
+    mod(){S.mod=v},role(){S.role=v;S.sel=null},extab(){S.exTab=v},filter(){S.filter=v},
+    sel(){S.sel=v?+v:null;const o=S.opps.find(o=>o.id===S.sel);if(o&&map)map.panTo([o.lat,o.lng])},
+    goopp(){S.exTab='map';S.filter='all';S.sel=+v},
+    tick(){const o=S.opps.find(o=>o.id==v);o.hrs+=o.every;toast('Fee is now '+money(fee(o)))},
+    soon(){modal(`<div class="eyebrow">Coming soon</div><h2>${esc(v)}</h2><p class="muted" style="margin-top:10px">This part is not connected yet. Contact administration for more details.</p><div class="row"><span class="sp"></span><button class="btn" data-a="closebtn">Close</button></div>`);return false},
+    sendaccess(){const o=S.opps.find(o=>o.id==v);if(!o.access){const a=prompt('Access details to send (lockbox code, entry notes)');if(!a)return false;o.access=a}o.accessSent=true;toast('Access details emailed to '+o.assignee)},
+    policy(){policyModal();return false},
+    cancel(){cancelModal(v);return false},
+    docancel(){const o=S.opps.find(o=>o.id==v),late=isLate(o);if(!o.mine)o.apps=o.apps.filter(x=>x.you!==S.role);o.status='open';o.assignee=null;if(late)strike(S.role,1);modal('');
+      toast(S.stand[S.role].st==='suspended'?'Cancelled · third strike, account suspended':S.stand[S.role].st==='revoked'?'Cancelled · access revoked':late?'Cancelled · 1 strike added':'Cancelled · no strike')},
+    noshow(){const o=S.opps.find(o=>o.id==v),who=o.assignee;o.apps=o.apps.filter(x=>x.who!==who);o.status='open';o.assignee=null;if(who===PERSONA.host.name)strike('host',2);toast('No-show recorded · 2 strikes for '+who+'. No payment collected.')},
+    appeal(){modal(`<div class="eyebrow">Appeal</div><h2>Appeal submitted</h2><p class="muted">Gaea reviews appeals within 2 business days. If reinstated, your account is on probation: 2 further strikes revoke access permanently.</p><div class="row"><span class="sp"></span><button class="btn ghost" data-a="closebtn">Close</button><button class="btn gold" data-a="reinstate">Demo: appeal approved</button></div>`);return false},
+    reinstate(){const s=S.stand[S.role];s.st='probation';s.pn=0;modal('');toast('Reinstated on probation')},
+    apply(){const o=S.opps.find(o=>o.id==v);
+      if(blocked()){toast('Your account is '+S.stand[S.role].st+'. See My gigs & payouts.');return false}
+      if(S.role==='host'&&!S.verified){verifyModal(v);return false}
+      const app={who:me(),rating:4.8,jobs:5,you:S.role};
+      if(o.dir==='bid'){const n=+$('#bidamt').value;if(!(n>=o.base)){toast('Minimum bid is '+money(o.base));return false}app.amount=n}
+      o.apps.push(app);toast(o.dir==='bid'?'Bid placed':'Request sent to '+o.lister)},
+    withdraw(){const o=S.opps.find(o=>o.id==v);o.apps=o.apps.filter(x=>x.you!==S.role);toast('Withdrawn')},
+    approve(){const [id,who]=v.split('|');const o=S.opps.find(o=>o.id==id);o.status='assigned';o.assignee=who;toast(who+' approved and notified by email'+(o.access&&o.autoAccess?' with access details':''))},
+    complete(){const o=S.opps.find(o=>o.id==v);const ap=o.apps.find(x=>x.who===o.assignee);const amt=o.dir==='pay'?fee(o):(ap.amount||o.base);o.status='done';
+      S.payouts.unshift({who:'lister',desc:`${o.type==='openhouse'?'Open house':'Showing'} · ${o.addr} (${o.assignee})`,amount:amt,dir:o.dir==='pay'?'out':'in',status:'Pending',date:'Today'});toast('Completed · '+money(amt)+' recorded. Automatic payment is coming soon.');rateModal(o.assignee)},
+    closebid(){const o=S.opps.find(o=>o.id==v);const w=[...o.apps].sort((a,b)=>(b.amount||0)-(a.amount||0))[0];o.status='assigned';o.assignee=w.who;toast('Bidding closed · '+w.who+' wins at '+money(w.amount))},
+    rate(){modal('');toast('Thanks — '+v+'★ recorded');return false},
+    oh(){const l=S.listings[v];l.oh=!l.oh},
+    post(){if(blocked()){toast('Your account is '+S.stand[S.role].st+'. See My gigs & payouts.');return false}postForm(+v);return false},
+    publish(){const l=S.listings[v],dir=$('#pf-dir').value,base=+$('#pf-base').value||0;
+      if(!$('#pf-consent').checked){toast('Confirm the seller’s written consent before publishing');return false}
+      if(dir==='learn'&&(base<49.99||base>499.99)){toast('Shadowing fee must be between $49.99 and $499.99');return false}
+      S.opps.push({id:Date.now(),addr:l.addr,city:l.city,price:l.price,beds:4,baths:3,lat:l.lat,lng:l.lng,type:$('#pf-type').value,dir,base,step:+$('#pf-step').value||0,every:+$('#pf-every').value||12,cap:Math.max(base,+$('#pf-cap').value||base),hrs:0,date:$('#pf-date').value,time:$('#pf-time').value,lister:me(),mine:true,status:'open',apps:[],access:$('#pf-access').value.trim(),autoAccess:$('#pf-autoaccess').checked});
+      modal('');toast('Published to the exchange map')},
+    verify(){verifyModal();return false},
+    doverify(){S.verified=true;modal('');toast('Verified');if(v){S.sel=+v}},
+    closebtn(){modal('');return false},
+    toast(){toast(v);return false},
+    pkg(){S.pkg=v||null;S.pkgTab='files';S.signRun=0},pkgtab(){S.pkgTab=v},
+    newpkg(){const addr=prompt('Property address for the new package');if(!addr)return false;const id='p'+Date.now();S.pkgs.push({id,addr,city:'',meta:'',built:1990,signed:false,ai:true,aiNote:'',files:[],viewers:[],activity:[['Today','You created this package']]});S.pkg=id;S.pkgTab='files'},
+    pick(){$('#fileinp').click();return false},
+    open(){const f=p.files[v];f.url?window.open(f.url,'_blank'):toast('Sample file — upload a PDF to preview it');return false},
+    summary(){const f=p.files[v];modal(`<div class="eyebrow">AI summary</div><h2>${esc(f.name)}</h2><p class="muted" style="margin-top:10px">Sample output. In production the G Force AI reads the document and returns key findings, repair costs, and anything a buyer should ask about, with page references.</p><div class="row"><span class="sp"></span><button class="btn" data-a="closebtn">Close</button></div>`);return false},
+    rename(){const f=p.files[v];const n=prompt('Rename file',f.name);if(!n)return false;f.name=n},
+    mv(){const [i,d]=v.split('|').map(Number);const [f]=p.files.splice(i,1);p.files.splice(i+d,0,f)},
+    del(){if(!confirm('Remove “'+p.files[v].name+'” from this package?'))return false;p.files.splice(v,1)},
+    autosort(){const ord=DOCS.map(d=>d.k);p.files.sort((a,b)=>{const x=ord.indexOf(classify(a.name)),y=ord.indexOf(classify(b.name));return (x<0?99:x)-(y<0?99:y)});toast('Sorted into standard disclosure order')},
+    share(){modal(`<div class="eyebrow">Share package</div><h2>${esc(p.addr)}</h2><label class="f" style="margin-top:14px">Private link<input type="text" readonly value="https://geta.house/d/${p.id}-sample"></label><p class="muted small">Viewers sign in with G Force before opening, so every view and download is tracked.</p><div class="row"><span class="sp"></span><button class="btn" data-a="closebtn">Done</button></div>`);return false},
+    runsign(){S.signRun=1;const tick=()=>{if(S.signRun<4){S.signRun++;if(S.mod==='disc'&&S.pkgTab==='sign')render();if(S.signRun<4)setTimeout(tick,1100)}};setTimeout(tick,1100)},
+    send(){p.signed=true;p.activity.unshift(['Today','Package sent to '+p.parties.length+' signers']);toast('Sent to '+p.parties.length+' signers (simulated)')},
+    addparty(){const name=prompt('Signer name');if(!name)return false;const role=prompt('Role (Seller, Listing agent, Buyer…)','Seller')||'Seller';const email=prompt('Email')||'';p.parties.push({name,role,email})},
+    delparty(){p.parties.splice(v,1)},
+    aitoggle(){p.ai=!p.ai},savenote(){p.aiNote=$('#ainote').value;toast('Instructions saved')}
+  };
+  if(A[a]&&A[a]()!==false)render();
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modal('')});
+render();
+</script>
+</body>
+</html>
